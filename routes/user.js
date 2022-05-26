@@ -19,6 +19,11 @@ function getHash(pwd, salt){
     return hashString
 }
 
+function createToken(userid){
+    const token=crypto.randomBytes(255).toString('base64').slice(0,255);
+    return token
+}
+
 router.post('/signup', async (req,res) => {
     const userdata = req.body
     const errors = []
@@ -57,16 +62,19 @@ router.post('/signup', async (req,res) => {
                 telephone_number: userdata.telephone_number
             },
         });
+        const access_token = createToken(createUser.customer_id)
+        const storeToken = await prisma.tokens.create({
+            data:{
+                user_id:createUser.customer_id,
+                token:access_token
+            }
+        })
         res.send(JSON.stringify({"status":"OK"}))
         return false
     }
     res.send(JSON.stringify({"status":"error", errors}))
     
     
-});
-
-router.get('/signin', async (req,res) => {
-
 });
 
 module.exports = router
