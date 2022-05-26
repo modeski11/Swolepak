@@ -4,6 +4,8 @@
   "description": "Our project for Software Engineering Workshop (CSB)\r this was ghiva's work\r Member: Allen, Ardya, Ghiva, Fata, and Vero",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
+    "devStart": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,9 +19,15 @@
   },
   "homepage": "https://github.com/modeski11/crud-wrpl#readme",
   "dependencies": {
+    "@prisma/client": "^3.14.0",
+    "axios": "^0.27.2",
     "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "express": "^4.18.1",
-    "mysql": "^2.18.1"
+    "multer": "^1.4.4",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.16"
   },
   "devDependencies": {
     "prisma": "^3.14.0"
