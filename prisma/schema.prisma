@@ -67,3 +67,10 @@ model order_items {
   quantity       Int
   transaction_id Int
 }
+
+model tokens {
+  token_id Int      @id @default(autoincrement())
+  user_id  Int
+  token    String   @db.VarChar(255)
+  stamp    DateTime @default(now()) @db.DateTime(0)
+}
