@@ -19,7 +19,7 @@ function getHash(pwd, salt){
     return hashString
 }
 
-function createToken(userid){
+function createToken(){
     const token=crypto.randomBytes(255).toString('base64').slice(0,255);
     return token
 }
@@ -62,19 +62,41 @@ router.post('/signup', async (req,res) => {
                 telephone_number: userdata.telephone_number
             },
         });
-        const access_token = createToken(createUser.customer_id)
+        const access_token = createToken()
         const storeToken = await prisma.tokens.create({
             data:{
                 user_id:createUser.customer_id,
                 token:access_token
             }
         })
-        res.send(JSON.stringify({"status":"OK"}))
+        res.send(JSON.stringify({"status":"OK", "tokens":access_token}))
         return false
     }
     res.send(JSON.stringify({"status":"error", errors}))
     
     
+});
+
+router.get('/login', async(req,res) => {
+    const userdata = req.body
+    const findEmail = await prisma.customer.findFirst({
+        where: {
+            email:userdata.email,
+        },
+
+    })
+    const findToken = await prisma.tokens.findFirst({
+        where: {
+            user_id: findEmail.customer_id
+        }
+    })
+    userdata.password = userdata.password?.toString() ?? ''
+    const hash = getHash(userdata.password, findEmail.salt)
+    if(hash === findEmail.hash){
+        res.send(JSON.stringify({"status":"OK","tokens":findToken.token}))
+        return false
+    }
+    res.send(JSON.stringify({"status":"error","errors":"Wrong username/password"}))
 });
 
 module.exports = router
