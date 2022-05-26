@@ -57,12 +57,16 @@ router.post('/signup', async (req,res) => {
                 telephone_number: userdata.telephone_number
             },
         });
-        console.log("Account created!");
+        res.send(JSON.stringify({"status":"OK"}))
         return false
     }
     res.send(JSON.stringify({"status":"error", errors}))
     
     
+});
+
+router.get('/signin', async (req,res) => {
+
 });
 
 module.exports = router
