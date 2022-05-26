@@ -8,15 +8,14 @@ datasource db {
 }
 
 model customer {
-  customer_id       String @id @db.VarChar(255)
-  first_name        String @db.VarChar(255)
-  last_name         String @db.VarChar(255)
-  customer_password String @db.VarChar(255)
-  email             String @db.VarChar(255)
-  address           String @db.VarChar(255)
-  country           String @db.VarChar(255)
-  telephone_number  String @db.VarChar(255)
-  isMembership      Int
+  customer_id      Int     @id @default(autoincrement())
+  email            String  @db.VarChar(255)
+  first_name       String  @db.VarChar(255)
+  last_name        String  @db.VarChar(255)
+  hash             String  @db.VarChar(255)
+  salt             String  @db.VarChar(255)
+  telephone_number String  @db.VarChar(255)
+  isMembership     Boolean @default(false)
 }
 
 model customer_cart {
