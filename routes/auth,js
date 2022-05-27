@@ -1,0 +1,14 @@
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient()
+
+async function auth(token){
+    const findToken = await prisma.tokens.findFirst({
+        where: {
+            token: token
+        },
+    })
+    if(findToken !== null){
+        return true;
+    }
+    return false;
+}
