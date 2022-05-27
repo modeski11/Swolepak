@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
-const crypto = require("crypto")
+const prisma = new PrismaClient()
+const crypto = require("crypto");
 
 
 
@@ -78,14 +78,14 @@ router.post('/signup', async (req,res) => {
 });
 
 router.get('/login', async(req,res) => {
-    const userdata = req.body
+    const userdata = req.body    
     const findEmail = await prisma.customer.findFirst({
         where: {
             email:userdata.email,
         },
 
     })
-    const findToken = await prisma.tokens.findFirst({
+    const getToken = await prisma.tokens.findFirst({
         where: {
             user_id: findEmail.customer_id
         }
@@ -93,10 +93,15 @@ router.get('/login', async(req,res) => {
     userdata.password = userdata.password?.toString() ?? ''
     const hash = getHash(userdata.password, findEmail.salt)
     if(hash === findEmail.hash){
-        res.send(JSON.stringify({"status":"OK","tokens":findToken.token}))
+        res.send(JSON.stringify({"status":"OK","tokens":getToken.token, "login":"login through password"}))
         return false
     }
     res.send(JSON.stringify({"status":"error","errors":"Wrong username/password"}))
 });
+
+//router.get('/auth', async(req,res)=> {
+//    const auth_token = req.body
+//    console.log(auth_token)
+//});
 
 module.exports = router
