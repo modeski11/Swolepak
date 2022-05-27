@@ -7,7 +7,6 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json());
 
 app.use('/api/user', require("./routes/user"));
-app.use('/api/auth', require("./routes/auth"));
 
 app.listen(3001, () =>{
     console.log("Listening on port 3001");
