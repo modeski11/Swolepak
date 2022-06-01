@@ -3,8 +3,6 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient()
 const crypto = require("crypto");
 
-
-
 const validateEmail = (email) => {
     return String(email)
       .toLowerCase()

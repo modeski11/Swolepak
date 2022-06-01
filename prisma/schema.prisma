@@ -32,17 +32,14 @@ model payment_method {
 }
 
 model product {
-  product_id   String @id @db.VarChar(255)
-  product_name String @db.VarChar(255)
-  supplier_id  Int
-  description  String @db.VarChar(255)
-  category_id  Int
-}
-
-model products {
-  product_id Int      @id @default(autoincrement())
-  createdAt  DateTime @db.DateTime(0)
-  updatedAt  DateTime @db.DateTime(0)
+  product_id   Int     @id @default(autoincrement())
+  product_name String  @db.VarChar(255)
+  seller_id    Int
+  description  String  @db.VarChar(255)
+  quantity     Int
+  price        Int
+  weight       Int
+  isAvailable  Boolean @default(true)
 }
 
 model review {
@@ -55,10 +52,10 @@ model review {
 
 model transaction {
   transaction_id   Int      @id @default(autoincrement())
-  transaction_date DateTime @db.Date
-  user_id          String   @db.VarChar(255)
-  payment_method   Int
-  shipper_id       Int
+  transaction_date DateTime @default(now()) @db.DateTime(0)
+  user_id          Int
+  payment_method   String   @db.VarChar(255)
+  shipper_id       String   @db.VarChar(255)
 }
 
 model order_items {
@@ -73,4 +70,20 @@ model tokens {
   user_id  Int
   token    String   @db.VarChar(255)
   stamp    DateTime @default(now()) @db.DateTime(0)
+}
+
+model shop {
+  shop_id   Int   @id @default(autoincrement())
+  shop_name Int
+  address   Int
+  province  Int
+  review    Float @db.Float
+  user_id   Int
+}
+
+model transaction_detail {
+  detail_id      Int @id @default(autoincrement())
+  transaction_id Int
+  product_id     Int
+  quantity       Int
 }
