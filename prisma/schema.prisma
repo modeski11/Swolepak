@@ -18,14 +18,6 @@ model customer {
   isMembership     Boolean @default(false)
 }
 
-model customer_cart {
-  cart_id     Int      @id
-  customer_id String   @db.VarChar(255)
-  product_id  String   @db.VarChar(255)
-  quantity    Int
-  date_added  DateTime @db.Date
-}
-
 model payment_method {
   payment_id   Int    @id
   payment_name String @db.VarChar(255)
@@ -35,6 +27,7 @@ model product {
   product_id   Int     @id @default(autoincrement())
   product_name String  @db.VarChar(255)
   seller_id    Int
+  category     String  @db.VarChar(255)
   description  String  @db.VarChar(255)
   quantity     Int
   price        Int
@@ -58,27 +51,11 @@ model transaction {
   shipper_id       String   @db.VarChar(255)
 }
 
-model order_items {
-  order_items_id Int    @id @default(autoincrement())
-  product_id     String @db.VarChar(255)
-  quantity       Int
-  transaction_id Int
-}
-
 model tokens {
   token_id Int      @id @default(autoincrement())
   user_id  Int
   token    String   @db.VarChar(255)
   stamp    DateTime @default(now()) @db.DateTime(0)
-}
-
-model shop {
-  shop_id   Int   @id @default(autoincrement())
-  shop_name Int
-  address   Int
-  province  Int
-  review    Float @db.Float
-  user_id   Int
 }
 
 model transaction_detail {

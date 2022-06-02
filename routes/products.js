@@ -22,19 +22,9 @@ router.post('/test', async (req,res) => {
     console.log(await auth(headers.token))
 })
 
-
-router.get('/', async (req,res) => {
-    const getProduct = await prisma.product.findFirst({
-
-        where: {
-            product_id: parseInt(req.query.id)
-        }
-    })
-    if(getProduct === null){
-        res.status(404).send(JSON.stringify({"status":"error","error":"Product not found"}))
-        return false
-    }
-    res.send(getProduct)
+router.get('/search/:key', async(req, res) => {
+    input - req.params.key
+    
 })
 
 router.post('/add', async (req,res) => {
@@ -52,6 +42,7 @@ router.post('/add', async (req,res) => {
     if(userdata.weight === null) errors.push("Weight has to be filled")
     if(userdata.quantity === null) errors.push("Quantitiy has to beb filled")
     if(userdata.price === null) errors.push("Price has to be filled")
+    if(userdata.category === null) errors.push("Category has to be filled")
     if(errors.length !== 0){
         res.send(JSON.stringify({"status":"error", "errors":errors}))
         return false
@@ -59,6 +50,7 @@ router.post('/add', async (req,res) => {
 
     userdata.productname = userdata.productname?.toString() ?? ''
     userdata.description = userdata.description?.toString() ?? ''
+    userdata.category = userdata.category?.toString() ?? ''
     const findSeller = await prisma.customer.findFirst({
         where: {
             customer_id:authenticate
@@ -74,7 +66,8 @@ router.post('/add', async (req,res) => {
             quantity: userdata.quantity,
             seller_id: findSeller.customer_id,
             price: userdata.price,
-            description: userdata.description
+            description: userdata.description,
+            category: userdata.category
         }
     })
     if(createProduct === null){
