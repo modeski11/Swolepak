@@ -1,7 +1,5 @@
 const router = require("express").Router();
 const { PrismaClient } = require("@prisma/client");
-const req = require("express/lib/request");
-const { JSON } = require("mysql/lib/protocol/constants/types");
 const prisma = new PrismaClient()
 
 async function auth(token){
@@ -22,9 +20,29 @@ router.post('/test', async (req,res) => {
     console.log(await auth(headers.token))
 })
 
-router.get('/search/:key', async(req, res) => {
-    input - req.params.key
-    
+router.get('/', async (req,res) => {
+    const getProduct = await prisma.product.findFirst({
+
+        where: {
+            product_id: parseInt(req.query.id)
+        }
+    })
+    if(getProduct === null){
+        res.status(404).send(JSON.stringify({"status":"error","error":"Product not found"}))
+        return false
+    }
+    res.send(getProduct)
+})
+
+router.get('/category/:key', async(req, res) => {
+    input = req.params.key
+    input = input?.toString() ?? ''
+    const findProduct = await prisma.product.findMany({
+        where:{
+            category: input
+        }
+    })
+    res.send(JSON.stringify({findProduct}));
 })
 
 router.post('/add', async (req,res) => {
