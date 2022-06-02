@@ -76,13 +76,16 @@ router.post('/signup', async (req,res) => {
 });
 
 router.post('/login', async(req,res) => {
-    const userdata = req.body    
+    const userdata = req.body
     const findEmail = await prisma.customer.findFirst({
         where: {
             email:userdata.email,
         },
 
-    })
+    });
+    if(findEmail === null){
+        res.send(JSON.stringify({"status":"error","errors":"Wrong email/password"}))
+    }
     userdata.password = userdata.password?.toString() ?? ''
     const hash = getHash(userdata.password, findEmail.salt)
     if(hash === findEmail.hash){
@@ -93,10 +96,10 @@ router.post('/login', async(req,res) => {
                 token: newToken,
             },
         })
-        res.send(JSON.stringify({"status":"OK","tokens":storeNewToken.token, "login":"login through password"}))
+        res.send(JSON.stringify({"status":"OK","response":[findEmail.customer_id,storeNewToken.token]}))
         return false
     }
-    res.send(JSON.stringify({"status":"error","errors":"Wrong username/password"}))
+    res.send(JSON.stringify({"status":"error","errors":"Wrong email/password"}))
 });
 
 module.exports = router
