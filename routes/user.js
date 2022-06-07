@@ -85,6 +85,7 @@ router.post('/login', async(req,res) => {
     });
     if(findEmail === null){
         res.send(JSON.stringify({"status":"error","errors":"Wrong email/password"}))
+        return false
     }
     userdata.password = userdata.password?.toString() ?? ''
     const hash = getHash(userdata.password, findEmail.salt)

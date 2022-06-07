@@ -32,6 +32,7 @@ model product {
   quantity     Int
   price        Int
   weight       Int
+  imageurl     String  @db.VarChar(255)
   isAvailable  Boolean @default(true)
 }
 
@@ -49,6 +50,7 @@ model transaction {
   user_id          Int
   payment_method   String   @db.VarChar(255)
   shipper_id       String   @db.VarChar(255)
+  order_status     Int      @default(1)
 }
 
 model tokens {
@@ -63,4 +65,15 @@ model transaction_detail {
   transaction_id Int
   product_id     Int
   quantity       Int
+}
+
+model status {
+  status_id   Int    @id @default(autoincrement())
+  status_name String @db.VarChar(255)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model best_seller {
+  best_id    Int @id
+  product_id Int
 }

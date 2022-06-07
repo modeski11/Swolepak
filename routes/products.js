@@ -14,11 +14,6 @@ async function auth(token){
     return null;
 }
 
-router.post('/test', async (req,res) => {
-    const headers = req.headers
-    headers.token = headers.token?.toString() ?? ''
-    console.log(await auth(headers.token))
-})
 
 router.get('/', async (req,res) => {
     const getProduct = await prisma.product.findFirst({
@@ -55,7 +50,7 @@ router.post('/add', async (req,res) => {
     }
     const userdata = req.body
     const errors = [];
-
+    if(userdata.imageurl === null) errors.push("Picture of the product has to be uploaded")
     if(userdata.productname === null) errors.push("Product name has to be filled")
     if(userdata.weight === null) errors.push("Weight has to be filled")
     if(userdata.quantity === null) errors.push("Quantitiy has to beb filled")
@@ -65,7 +60,7 @@ router.post('/add', async (req,res) => {
         res.send(JSON.stringify({"status":"error", "errors":errors}))
         return false
     }
-
+    userdata.imageurl = userdata.imageurl?.toString() ?? ''
     userdata.productname = userdata.productname?.toString() ?? ''
     userdata.description = userdata.description?.toString() ?? ''
     userdata.category = userdata.category?.toString() ?? ''
@@ -85,7 +80,8 @@ router.post('/add', async (req,res) => {
             seller_id: findSeller.customer_id,
             price: userdata.price,
             description: userdata.description,
-            category: userdata.category
+            category: userdata.category,
+            imageurl: userdata.imageurl
         }
     })
     if(createProduct === null){
