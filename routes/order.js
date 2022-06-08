@@ -41,13 +41,13 @@ router.get('/received_order', async(req, res) => {
         res.send(JSON.stringify({"status":"error", "errors":"No Token"}))
         return false
     }
-    if(authenticate !== req.body.customer_id){
+    if(authenticate !== req.body.seller_id){
         res.send(JSON.stringify({"status":"error", "errors":"Unauthorized"}))
         return false
     }
     const getOrders = await prisma.transaction.findMany({
         where:{
-            seller_id: req.body.customer_id
+            seller_id: req.body.seller_id
         }
     })
     res.send(JSON.stringify({"status":"OK", "transactions":getOrders}))
