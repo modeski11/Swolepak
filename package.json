@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/modeski11/crud-wrpl#readme",
   "dependencies": {
-    "@prisma/client": "^3.14.0",
+    "@prisma/client": "^3.15.0",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",

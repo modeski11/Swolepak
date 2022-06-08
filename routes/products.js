@@ -91,65 +91,6 @@ router.post('/add', async (req,res) => {
     res.send(JSON.stringify({"status":"OK",createProduct}))
 })
 
-router.post('/buy', async(req,res) => {
-    const headers = req.headers
-    headers.token = headers.token?.toString() ?? ''
-    const authenticate = await auth(headers.token)
-    if(authenticate === null){
-        res.send(JSON.stringify({"status":"error", "errors":"No Token"}))
-        return false
-    }
-    const errors = []
-    const  input = req.body
-    //The feature to give error messages when one of the field returns empty
-    if(input.product_id.length<=0) errors.push("Product has to be selected")
-    if(input.shipper_id === null) errors.push("Shipper has to be selected")
-    if(input.payment_method === null) errors.push("A payment method has to be selected")
-    if(errors.length > 0){
-        res.send(JSON.stringify({"status":"error", "errors":errors}))
-        return false
-    }
-    input.shipper_id = input.shipper_id?.toString() ?? ''
-    input.payment_method = input.payment_method?.toString() ?? ''
-    console.log(input.product_id[0])
-    const createTransaction = await prisma.transaction.create({
-        data:{
-            user_id: authenticate,
-            shipper_id: input.shipper_id,
-            payment_method: input.payment_method
-        }
-    })
-    for(let i = 0; i < input.product_id.length; i++){
-        const getProduct = await prisma.product.findFirst({
-            where:{
-                product_id: parseInt(input.product_id[i])
-            }
-        })
-        if(input.quantity[i] > getProduct.quantity){
-            res.send(JSON.stringify({"status":"error","errors":"Not enough stock"}))
-            return false
-        }
-        if(getProduct === null){
-            res.send({"status":"error","errors":"Product is missing"})
-            return false
-        }
-        const editQuantity = await prisma.product.update({
-            where:{
-                product_id: input.product_id[i]
-            },
-            data:{
-                quantity: getProduct.quantity - input.quantity[i]
-            }
-        })
-        const createTransactionDetail = await prisma.transaction_detail.create({
-            data:{
-                transaction_id: createTransaction.transaction_id,
-                product_id: parseInt(input.product_id[i]),
-                quantity: parseInt(input.quantity[i])
-            }
-        })
-    }
-});
 
 router.put('/delete', async(req,res) => {
     const headers = req.headers
