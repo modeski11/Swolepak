@@ -29,6 +29,11 @@ router.get('/', async (req,res) => {
     res.send(getProduct)
 })
 
+router.get('/bestseller', async(req,res) => {
+    const getBestSeller = await prisma.best_seller.findMany({})
+    res.send(JSON.stringify({"status":"OK", "response":getBestSeller}))
+})
+
 router.get('/category/:key', async(req, res) => {
     input = req.params.key
     input = input?.toString() ?? ''
