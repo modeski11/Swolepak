@@ -15,17 +15,6 @@ async function auth(token){
 }
 
 router.get('/myorder', async(req, res) => {
-    const headers = req.headers
-    headers.token = headers.token?.toString() ?? ''
-    const authenticate = await auth(headers.token)
-    if(authenticate === null){
-        res.send(JSON.stringify({"status":"error", "errors":"No Token"}))
-        return false
-    }
-    if(authenticate !== req.body.customer_id){
-        res.send(JSON.stringify({"status":"error", "errors":"Unauthorized"}))
-        return false
-    }
     const getOrders = await prisma.transaction.findMany({
         where:{
             customer_id: req.body.customer_id
@@ -34,17 +23,6 @@ router.get('/myorder', async(req, res) => {
     res.send(JSON.stringify({"status":"OK", "transactions":getOrders}))
 });
 router.get('/received_order', async(req, res) => {
-    const headers = req.headers
-    headers.token = headers.token?.toString() ?? ''
-    const authenticate = await auth(headers.token)
-    if(authenticate === null){
-        res.send(JSON.stringify({"status":"error", "errors":"No Token"}))
-        return false
-    }
-    if(authenticate !== req.body.seller_id){
-        res.send(JSON.stringify({"status":"error", "errors":"Unauthorized"}))
-        return false
-    }
     const getOrders = await prisma.transaction.findMany({
         where:{
             seller_id: req.body.seller_id
