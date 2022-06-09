@@ -2,18 +2,6 @@ const router = require("express").Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient()
 
-async function auth(token){
-    const findToken = await prisma.tokens.findFirst({
-        where: {
-            token: token
-        },
-    })
-    if(findToken !== null){
-        return findToken.user_id
-    }
-    return null;
-}
-
 router.get('/myorder', async(req, res) => {
     const getOrders = await prisma.transaction.findMany({
         where:{
