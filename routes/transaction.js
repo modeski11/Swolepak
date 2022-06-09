@@ -62,7 +62,8 @@ router.post('/buy', async(req,res) => {
             product_id: input.product_id,
             quantity: input.quantity,
             seller_id: getProduct.seller_id,
-            total_price: parseInt(getProduct.price) * parseInt(input.quantity)
+            total_price: parseInt(getProduct.price) * parseInt(input.quantity),
+            product_name: getProduct.product_name
         }
     })
     res.send(JSON.stringify({"status":"OK", "response":createTransaction}))

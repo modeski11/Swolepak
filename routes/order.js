@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 router.get('/myorder', async(req, res) => {
     const getOrders = await prisma.transaction.findMany({
         where:{
-            customer_id: req.body.customer_id
+            customer_id: req.body.user_id
         }
     })
     res.send(JSON.stringify({"status":"OK", "transactions":getOrders}))
@@ -13,7 +13,7 @@ router.get('/myorder', async(req, res) => {
 router.get('/received_order', async(req, res) => {
     const getOrders = await prisma.transaction.findMany({
         where:{
-            seller_id: req.body.seller_id
+            seller_id: req.body.user_id
         }
     })
     res.send(JSON.stringify({"status":"OK", "transactions":getOrders}))

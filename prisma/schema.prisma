@@ -44,12 +44,13 @@ model transaction {
   transaction_date DateTime @default(now()) @db.DateTime(0)
   customer_id      Int
   product_id       Int
+  product_name     String   @db.VarChar(255)
   quantity         Int
   total_price      Int
   seller_id        Int
   payment_method   String   @db.VarChar(255)
   shipper_id       String   @db.VarChar(255)
-  order_status     Int      @default(1)
+  order_status     String   @default("Order has been received") @db.VarChar(255)
 }
 
 model tokens {
