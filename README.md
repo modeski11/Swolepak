@@ -1,4 +1,4 @@
-# crud-wrpl
+# Swolwepak
 
 Our project for Software Engineering Workshop (CSB)
 
