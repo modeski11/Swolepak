@@ -64,8 +64,3 @@ model status {
   status_id   Int    @id @default(autoincrement())
   status_name String @db.VarChar(255)
 }
-
-model best_seller {
-  best_id    Int @id
-  product_id Int
-}
