@@ -45,6 +45,19 @@ router.get('/category/:key', async(req, res) => {
     res.send(JSON.stringify({findProduct}));
 })
 
+router.get('/search/:key', async(req, res) => {
+    input = req.params.key
+    input = input?.toString() ?? ''
+    const findProduct = await prisma.product.findMany({
+        where:{
+            product_name: {
+                startsWith: input
+            }
+        }
+    })
+    res.send(JSON.stringify({findProduct}));
+})
+
 router.post('/add', async (req,res) => {
     const headers = req.headers
     headers.token = headers.token?.toString() ?? ''
@@ -128,7 +141,7 @@ router.put('/delete', async(req,res) => {
         }
     })
     res.send(JSON.stringify({"status":"OK", deleteProduct}));
-})
+});
 
 
 
