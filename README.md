@@ -1,4 +1,4 @@
-# Swolwepak
+# Swolepak
 
 Our project for Software Engineering Workshop (CSB)
 
