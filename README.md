@@ -1,5 +1,3 @@
 # Swolepak
 
-Our project for Software Engineering Workshop (CSB)
-
-Member: Allen, Ardya, Ghiva, Fata, and Vero
+Backend Project for Software Engineering Workshop (CSB)
